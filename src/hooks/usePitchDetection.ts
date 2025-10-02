@@ -3,8 +3,8 @@ import useUserAudio from "@/hooks/useUserAudio"; // Custom hook to get user audi
 
 const FFT_SIZE = 2048;
 
-function usePitchDetection() {
-  const { stream, error: audioError } = useUserAudio();
+function usePitchDetection(selectedDeviceId?: string) {
+  const { stream, error: audioError } = useUserAudio(selectedDeviceId);
   const [pitch, setPitch] = useState<number | null>(null); // Detected pitch in Hz
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function useUserAudio() {
+function useUserAudio(selectedDeviceId?: string) {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -8,7 +8,9 @@ function useUserAudio() {
     async function initAudio() {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
+          audio: selectedDeviceId
+            ? { deviceId: { exact: selectedDeviceId } }
+            : true,
         });
         setStream(mediaStream);
       } catch (err: unknown) {
@@ -26,7 +28,7 @@ function useUserAudio() {
     return () => {
       stream?.getTracks().forEach((track) => track.stop());
     };
-  }, [stream]);
+  }, [stream, selectedDeviceId]);
 
   return { stream, error };
 }
